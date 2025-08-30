@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Favicon Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .upload-area {
+            border: 2px dashed #3B82F6;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #1D4ED8;
+            background: #f1f5f9;
+        }
+
+        .upload-area.dragover {
+            border-color: #1D4ED8;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #3B82F6;
+            margin-bottom: 15px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .preview-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .preview-card h3 {
+            margin-bottom: 15px;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .size-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .size-controls label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .size-controls input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .instructions {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .instructions h3 {
+            color: #0369a1;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            color: #0f172a;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #3B82F6;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3B82F6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Pulse Favicon Converter</h1>
+            <p>Convert your SVG favicons to PNG and ICO formats</p>
+        </div>
+
+        <div class="content">
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📁</div>
+                <h3>Drop SVG files here or click to select</h3>
+                <p>Select favicon.svg, favicon-16x16.svg, favicon-32x32.svg, apple-touch-icon.svg</p>
+                <input type="file" id="fileInput" multiple accept=".svg" />
+            </div>
+
+            <div class="loading">
+                <div class="spinner"></div>
+                Converting files...
+            </div>
+
+            <div class="size-controls">
+                <label>Canvas Size:</label>
+                <input type="number" id="customWidth" value="32" min="16" max="512" />
+                <span>×</span>
+                <input type="number" id="customHeight" value="32" min="16" max="512" />
+                <button class="btn" onclick="convertCustomSize()">Convert Custom Size</button>
+            </div>
+
+            <div class="preview-grid" id="previewGrid"></div>
+
+            <div class="instructions">
+                <h3>📋 Instructions:</h3>
+                <ol>
+                    <li>Select your SVG favicon files using the upload area above</li>
+                    <li>The tool will automatically generate PNG versions in standard sizes</li>
+                    <li>Download the generated PNG files</li>
+                    <li>For ICO format, visit <a href="https://svg2ico.com" target="_blank">svg2ico.com</a> and upload the 32x32 PNG</li>
+                    <li>Save the ICO file as <code>favicon.ico</code> in your public directory</li>
+                    <li>Your favicon setup will be complete! 🎉</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.querySelector('.upload-area');
+        const fileInput = document.getElementById('fileInput');
+        const previewGrid = document.getElementById('previewGrid');
+        const loading = document.querySelector('.loading');
+
+        // Standard favicon sizes
+        const standardSizes = [
+            { name: 'favicon-16x16.png', width: 16, height: 16 },
+            { name: 'favicon-32x32.png', width: 32, height: 32 },
+            { name: 'apple-touch-icon.png', width: 180, height: 180 },
+        ];
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            loading.style.display = 'block';
+            previewGrid.innerHTML = '';
+
+            Array.from(files).forEach(file => {
+                if (file.type === 'image/svg+xml') {
+                    processSVGFile(file);
+                }
+            });
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 1000);
+        }
+
+        function processSVGFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const svgContent = e.target.result;
+
+                // Determine which sizes to generate based on filename
+                let sizesToGenerate = standardSizes;
+
+                if (file.name.includes('16x16')) {
+                    sizesToGenerate = [{ name: 'favicon-16x16.png', width: 16, height: 16 }];
+                } else if (file.name.includes('32x32')) {
+                    sizesToGenerate = [{ name: 'favicon-32x32.png', width: 32, height: 32 }];
+                } else if (file.name.includes('apple-touch-icon')) {
+                    sizesToGenerate = [{ name: 'apple-touch-icon.png', width: 180, height: 180 }];
+                }
+
+                sizesToGenerate.forEach(size => {
+                    convertSVGToPNG(svgContent, size.width, size.height, size.name, file.name);
+                });
+            };
+            reader.readAsText(file);
+        }
+
+        function convertSVGToPNG(svgContent, width, height, outputName, sourceName) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const svgBlob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+            const svgUrl = URL.createObjectURL(svgBlob);
+
+            img.onload = () => {
+                // Clear canvas with transparent background
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw the SVG
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Convert to PNG
+                canvas.toBlob((blob) => {
+                    createPreviewCard(blob, outputName, width, height, sourceName);
+                    URL.revokeObjectURL(svgUrl);
+                }, 'image/png');
+            };
+
+            img.onerror = () => {
+                console.error('Failed to load SVG:', sourceName);
+                URL.revokeObjectURL(svgUrl);
+            };
+
+            img.src = svgUrl;
+        }
+
+        function createPreviewCard(blob, filename, width, height, sourceName) {
+            const card = document.createElement('div');
+            card.className = 'preview-card';
+
+            const title = document.createElement('h3');
+            title.textContent = `${filename} (${width}×${height})`;
+
+            const img = document.createElement('img');
+            img.className = 'preview-image';
+            img.src = URL.createObjectURL(blob);
+            img.style.width = Math.min(width * 2, 100) + 'px';
+
+            const source = document.createElement('p');
+            source.textContent = `From: ${sourceName}`;
+            source.style.fontSize = '0.85rem';
+            source.style.color = '#6b7280';
+            source.style.marginBottom = '10px';
+
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'btn';
+            downloadBtn.textContent = `Download ${filename}`;
+            downloadBtn.onclick = () => downloadBlob(blob, filename);
+
+            card.appendChild(title);
+            card.appendChild(source);
+            card.appendChild(img);
+            card.appendChild(downloadBtn);
+
+            previewGrid.appendChild(card);
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function convertCustomSize() {
+            const width = parseInt(document.getElementById('customWidth').value);
+            const height = parseInt(document.getElementById('customHeight').value);
+
+            if (!width || !height || width < 16 || height < 16) {
+                alert('Please enter valid dimensions (minimum 16x16)');
+                return;
+            }
+
+            const fileInputs = document.getElementById('fileInput').files;
+            if (fileInputs.length === 0) {
+                alert('Please select SVG files first');
+                return;
+            }
+
+            Array.from(fileInputs).forEach(file => {
+                if (file.type === 'image/svg+xml') {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const customName = `favicon-${width}x${height}.png`;
+                        convertSVGToPNG(e.target.result, width, height, customName, file.name);
+                    };
+                    reader.readAsText(file);
+                }
+            });
+        }
+
+        // Show welcome message
+        window.addEventListener('load', () => {
+            console.log('🎨 Pulse Favicon Converter loaded!');
+            console.log('📁 Drop your SVG files or click to select them');
+        });
+    </script>
+</body>
+</html>

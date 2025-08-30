@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id                 // Clerk userId or guest id (no default)
+  name      String?
+  image     String?
+  isGuest   Boolean     @default(false)
+  createdAt DateTime    @default(now())
+
+  memberships RoomMember[]
+  messages    Message[]
+  requests    JoinRequest[]
+}
+
+model Room {
+  id        String       @id @default(cuid())
+  name      String
+  createdAt DateTime     @default(now())
+
+  members  RoomMember[]
+  messages Message[]
+  requests JoinRequest[]
+}
+
+model RoomMember {
+  id        String   @id @default(cuid())
+  role      Role     @default(MEMBER)
+  createdAt DateTime @default(now())
+
+  userId String
+  roomId String
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+
+  @@unique([roomId, userId])
+}
+
+model JoinRequest {
+  id        String      @id @default(cuid())
+  status    RequestStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+
+  userId String
+  roomId String
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+
+  userId String
+  roomId String
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

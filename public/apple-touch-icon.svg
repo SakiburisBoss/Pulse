@@ -1,0 +1,30 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradientApple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glowApple">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background with rounded corners for iOS -->
+  <rect width="180" height="180" rx="32" fill="url(#gradientApple)" filter="url(#glowApple)"/>
+
+  <!-- Multiple pulse rings for visual depth -->
+  <circle cx="90" cy="90" r="60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Letter P - larger and more detailed -->
+  <path d="M55 45v90h18v-36h24c18.78 0 34-15.22 34-34s-15.22-34-34-34H55zm18 18h24c9.39 0 17 7.61 17 17s-7.61 17-17 17H73V63z" fill="white" opacity="0.95"/>
+
+  <!-- Subtle highlight on the P -->
+  <path d="M55 45v18h18v-18H55z" fill="rgba(255,255,255,0.2)"/>
+</svg>

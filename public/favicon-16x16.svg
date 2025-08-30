@@ -1,0 +1,14 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient16" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="8" cy="8" r="7" fill="url(#gradient16)"/>
+
+  <!-- Simplified P for small size -->
+  <path d="M5 4v8h1.5v-3h2c1.66 0 3-1.34 3-3s-1.34-3-3-3H5zm1.5 1.5h2c0.83 0 1.5 0.67 1.5 1.5s-0.67 1.5-1.5 1.5h-2v-3z" fill="white"/>
+</svg>
