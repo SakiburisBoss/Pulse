@@ -5,6 +5,7 @@ import RoomCardDeleteButton from "@/components/RoomCardDeleteButton";
 import { getIdentity } from "@/lib/auth";
 import { getCachedRooms } from "@/lib/cache";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default async function HomePage() {
   const me = await getIdentity();
@@ -85,9 +86,9 @@ export default async function HomePage() {
                 <span className="text-orange-300 font-medium">temporary</span>
                 .
                 <br />
-                <span className="text-pink-300 font-semibold">
+                <Link href={"/sign-in"} className="text-pink-300 font-semibold">
                   Create an account
-                </span>{" "}
+                </Link>{" "}
                 from the menu above to save your rooms and get a permanent
                 profile.
               </p>
