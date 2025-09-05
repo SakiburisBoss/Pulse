@@ -46,7 +46,7 @@ export default async function HomePage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="space-y-12">
+        <div className="space-y-8">
           <div className="text-center space-y-6 animate-fade-in">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground">
               Welcome to your
@@ -68,6 +68,32 @@ export default async function HomePage() {
             </SignedOut>
           </div>
 
+          <SignedOut>
+            <div className="p-4 rounded-xl border border-yellow-400/50 bg-gradient-to-r from-yellow-500/20 via-orange-500/20 to-pink-500/20 shadow-lg shadow-yellow-500/10">
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-md">
+                  <span className="text-white text-sm">ℹ️</span>
+                </div>
+                <span className="text-base font-semibold text-yellow-300">
+                  Guest Mode
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed text-gray-200">
+                You are using{" "}
+                <span className="font-semibold text-yellow-200">Pulse</span> as
+                a guest. You can create and join rooms, but your session will be{" "}
+                <span className="text-orange-300 font-medium">temporary</span>
+                .
+                <br />
+                <span className="text-pink-300 font-semibold">
+                  Create an account
+                </span>{" "}
+                from the menu above to save your rooms and get a permanent
+                profile.
+              </p>
+            </div>
+          </SignedOut>
+
           <div className="bg-card rounded-2xl border border-border/50 p-8 shadow-xl shadow-black/5 animate-fade-in">
             <h3 className="text-2xl font-semibold mb-6 flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-to-r from-success to-success/80 rounded-lg flex items-center justify-center">
@@ -76,25 +102,6 @@ export default async function HomePage() {
               Create New Room
             </h3>
             <CreateRoomForm />
-            <SignedOut>
-              <div className="mt-4 p-4 bg-accent/50 rounded-lg border border-border/30">
-                <div className="flex items-center space-x-2 mb-2">
-                  <div className="w-5 h-5 bg-gradient-to-r from-warning/30 to-warning/20 rounded-full flex items-center justify-center">
-                    <span className="text-warning text-xs">ℹ️</span>
-                  </div>
-                  <span className="text-sm font-medium text-foreground">
-                    Guest Mode
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  You are using Pulse as a guest. You can create and join rooms,
-                  but your session will be temporary.
-                  <br />
-                  Create an account from the menu above to save your rooms and
-                  get a permanent profile.
-                </p>
-              </div>
-            </SignedOut>
           </div>
 
           <div id="rooms" className="space-y-6 animate-fade-in">
@@ -105,8 +112,8 @@ export default async function HomePage() {
                 </div>
                 Available Rooms
               </h3>
-              <span className="text-sm text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full">
-                {rooms.length} rooms
+              <span className="font-bold text-green-500  bg-secondary/50 px-3 py-1 rounded-full">
+                {rooms.length} <span className="text-blue-500 ml-2">rooms</span>
               </span>
             </div>
 
@@ -128,7 +135,7 @@ export default async function HomePage() {
                   const isAdmin =
                     room.members?.some(
                       (member) =>
-                        member.userId === me.id && member.role === "ADMIN",
+                        member.userId === me.id && member.role === "ADMIN"
                     ) ?? false;
 
                   return (
@@ -169,7 +176,7 @@ export default async function HomePage() {
                             {room._count?.messages || 0} messages
                           </span>
                         </div>
-                        <span className="text-xs text-primary font-medium group-hover:text-primary/80">
+                        <span className="text-2xl text-primary font-bold group-hover:text-primary/80">
                           Join →
                         </span>
                       </div>
