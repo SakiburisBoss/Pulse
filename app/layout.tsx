@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Pulse - Modern Chat Experience",
-  description: "Connect and communicate in real-time with Pulse",
+  description: "Connect and communicate in real-time with Pulse...",
   keywords: ["chat", "realtime", "messaging", "communication"],
   icons: {
     icon: [
