@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
+import IframeHandshake from "@/components/IframeHandshake";
 
 export const metadata: Metadata = {
   title: "Pulse - Modern Chat Experience",
@@ -34,6 +35,7 @@ export default function RootLayout({
       <html lang="en" className="scroll-smooth">
         <body className="min-h-screen bg-gradient-to-br from-background via-background to-accent/20 antialiased">
           <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent">
+            < IframeHandshake />
             {children}
           </div>
         </body>
